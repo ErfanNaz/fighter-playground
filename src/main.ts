@@ -12,8 +12,12 @@ globalThis.addEventListener('load', () => {
   let position = { x: 0, y: 0 };
   let currentAnimation: Animations = Animations.IDLE;
   let nextAnimation: Animations = currentAnimation;
+  let isLocked: boolean = false;
 
   globalThis.addEventListener('keydown', (event) => {
+    if (isLocked) {
+      return
+    }
     if (event.isComposing || event.key === 'd') {
       position.x = position.x + 8;
       nextAnimation = Animations.WALK;
@@ -36,8 +40,14 @@ globalThis.addEventListener('load', () => {
     if (event.isComposing || event.key === 'k') {
       nextAnimation = Animations.POWER_SHOT;
     }
+    if (event.isComposing || event.key === 'l') {
+      nextAnimation = Animations.AXE_KICK;
+    }
   });
   globalThis.addEventListener('keyup', (event) => {
+    if (isLocked) {
+      return
+    }
     nextAnimation = Animations.IDLE;
   });
 
@@ -50,27 +60,35 @@ globalThis.addEventListener('load', () => {
   app.loader.add(['assets/fighter.json']).load((data) => {
     const frames = getAnimationFrames(Animations.SPIN)
 
-    const anim = new AnimatedSprite(frames);
-    anim.scale.x = 4;
-    anim.scale.y = 4;
-    anim.x = app.screen.width / 2;
-    anim.y = app.screen.height / 2;
-    anim.anchor.set(0.1);
-    anim.animationSpeed = 0.1;
-    anim.play();
+    const player = new AnimatedSprite(frames);
+    player.scale.x = 4;
+    player.scale.y = 4;
+    player.x = app.screen.width / 2;
+    player.y = app.screen.height / 2;
+    player.anchor.set(0.1);
+    player.animationSpeed = 0.1;
 
-    app.stage.addChild(anim);
+    player.onLoop = () => {
+      isLocked = false;
+    }
+
+    player.play();
+
+    app.stage.addChild(player);
 
     app.stage.removeChild();
 
     app.ticker.add(() => {
-      anim.x = position.x;
-      anim.y = position.y;
+      player.x = position.x;
+      player.y = position.y;
 
       if (currentAnimation !== nextAnimation) {
         currentAnimation = nextAnimation;
-        anim.textures = getAnimationFrames(currentAnimation);
-        anim.play();
+        isLocked = nextAnimation !== Animations.IDLE && nextAnimation !== Animations.WALK
+
+
+        player.textures = getAnimationFrames(currentAnimation);
+        player.play();
       }
     });
   });
