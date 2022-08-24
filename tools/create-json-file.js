@@ -2,32 +2,10 @@
 const fs = require('fs');
 const path = require('path');
 
-const settings = {
-    idle: {
-        row: 0,
-        count: 3
-    },
-    walk: {
-        row: 1,
-        count: 7
-    },
-    jump: {
-        row: 2,
-        count: 7
-    },
-    spin: {
-        row: 3,
-        count: 9
-    },
-    dead: {
-        row: 4,
-        count: 8
-    },
-    power_shot: {
-        row: 5,
-        count: 6
-    }
-}
+const SETTINGS = require('./../src/animation_setting');
+const TARGET_PATH = path.resolve(__dirname, '..', 'src', 'assets', 'fighter.json');
+
+const TILE_SIZE = 64;
 
 const json = {
     frames: {},
@@ -40,21 +18,17 @@ const json = {
     }
 }
 
-for (let key in settings) {
-    for (let frame = 0; frame <= settings[key].count; frame++) {
+for (let key in SETTINGS) {
+    for (let frame = 0; frame <= SETTINGS[key].count; frame++) {
+        const _frame = (SETTINGS[key].startAt || 0) + frame
         json.frames[`${key}-${frame}.png`] = {
-            frame: { x: 64 * frame, y: 64 * settings[key].row, w: 64, h: 64 },
+            frame: { x: TILE_SIZE * _frame, y: TILE_SIZE * SETTINGS[key].row, w: TILE_SIZE, h: TILE_SIZE },
             rotated: false,
             trimmed: false,
-            spriteSourceSize: { x: 64 * frame, y: 64 * settings[key].row, w: 64, h: 64 },
-            sourceSize: { w: 64, h: 64 }
+            // spriteSourceSize: { x: TILE_SIZE * _frame, y: TILE_SIZE * SETTINGS[key].row, w: TILE_SIZE, h: TILE_SIZE },
+            // sourceSize: { w: TILE_SIZE, h: TILE_SIZE }
         }
     }
 }
 
-console.log()
-
-const targetPath = path.resolve(__dirname, '..', 'src', 'assets', 'fighter.json');
-
-// fs.writeJson(path.resolve(__dirname, 'src', 'assets', 'foobar.json'))
-fs.writeFileSync(targetPath, JSON.stringify(json));
+fs.writeFileSync(TARGET_PATH, JSON.stringify(json));

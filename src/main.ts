@@ -1,4 +1,5 @@
-import { AnimatedSprite, Application, Sprite, Texture } from 'pixi.js';
+import { AnimatedSprite, Application, Texture } from 'pixi.js';
+import * as ANIMATION_SETTINGS from './animation_setting';
 
 globalThis.addEventListener('load', () => {
   // The application will create a renderer using WebGL, if possible,
@@ -15,7 +16,7 @@ globalThis.addEventListener('load', () => {
   stage!.appendChild(app.view);
 
   app.loader.add(['assets/fighter.json']).load((data) => {
-    const frames = getAnimation(Animations.SPIN)
+    const frames = getAnimation(Animations.MID_KICK)
 
     const anim = new AnimatedSprite(frames);
     anim.scale.x = 4;
@@ -41,45 +42,28 @@ enum Animations {
   JUMP = 'jump',
   SPIN = 'spin',
   DEAD = 'dead',
-  POWER_SHOT = 'power_shot'
+  POWER_SHOT = 'power_shot',
+  FAST_SHOT = 'fast_shot',
+  FLYING_KICK = 'flying_kick',
+  SHORYUKEN = 'shoryuken',
+  ONE_TWO_COMBO = 'one_two_combo',
+  LOW_KICK = 'low_kick',
+  MID_KICK = 'mid_kick',
+  HIGH_KICK = 'high_kick',
+  AXE_KICK = 'axe_kick',
+  TWO_SIDE_ATTACK = 'two_side_attack',
+  ROUND_KICK = 'round_kick',
+  UPPERCUT = 'uppercut'
 }
 
+
 function getAnimation(anim: Animations) {
-  let frameName = 'idle', frameCount = 0;
-  switch (anim) {
-    case Animations.IDLE:
-      frameName = 'idle';
-      frameCount = 4;
-      break;
-    case Animations.WALK:
-      frameName = 'walk';
-      frameCount = 8;
-      break;
-    case Animations.JUMP:
-      frameName = 'jump';
-      frameCount = 8;
-      break;
-      
-    case Animations.SPIN:
-      frameName = 'spin';
-      frameCount = 9;
-      break;
-      
-    case Animations.DEAD:
-      frameName = 'dead';
-      frameCount = 8;
-      break;
-      
-    case Animations.POWER_SHOT:
-      frameName = 'power_shot';
-      frameCount = 6;
-      break;
-  }
+  const frameCount = ANIMATION_SETTINGS[anim].count;
 
   const frames: Texture[] = [];
 
-  for (let i = 0; i < frameCount; i++) {
-    const fighter = Texture.from(`${frameName}-${i}.png`);
+  for (let i = 0; i <= frameCount; i++) {
+    const fighter = Texture.from(`${anim}-${i}.png`);
     frames.push(fighter);
   }
 
