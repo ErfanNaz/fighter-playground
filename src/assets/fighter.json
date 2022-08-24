@@ -1,20 +1,39 @@
 {
   "frames": {
-    "0.png" :  {
-      "frame": { "x": 483, "y": 692, "w": 169, "h": 226 },
+    "idle-0.png" :  {
+      "frame": { "x": 0, "y": 0, "w": 64, "h": 64 },
       "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": { "x": 3, "y": 4, "w": 169, "h": 226 },
-      "sourceSize": { "w": 175, "h": 240 }
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+      "sourceSize": { "w": 64, "h": 64 }
+    },
+    "idle-1.png" :  {
+      "frame": { "x": 64, "y": 0, "w": 64, "h": 64 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 64, "y": 0, "w": 64, "h": 64 },
+      "sourceSize": { "w": 64, "h": 64 }
+    },
+    "idle-2.png" :  {
+      "frame": { "x": 128, "y": 0, "w": 64, "h": 64 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 128, "y": 0, "w": 64, "h": 64 },
+      "sourceSize": { "w": 64, "h": 64 }
+    },
+    "idle-3.png" :  {
+      "frame": { "x": 192, "y": 0, "w": 64, "h": 64 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 192, "y": 0, "w": 64, "h": 64 },
+      "sourceSize": { "w": 64, "h": 64 }
     }
   },
   "meta": {
-    "app": "http://www.texturepacker.com",
     "version": "1.0",
     "image": "fighter.png",
     "format": "RGBA8888",
     "size": { "w": 1024, "h": 1024 },
-    "scale": "1",
-    "smartupdate": "$TexturePacker:SmartUpdate:2f213a6b451f9f5719773418dfe80ae8$"
+    "scale": "1"
   }
 }

@@ -6,21 +6,19 @@
   "scripts": {
     "start": "parcel serve",
     "build": "parcel build",
-    "cp": "cp -a ./src/assets/ dist/assets",
+    "cp": "node ./tools/copy-assets.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "staticFiles": {
-    "staticPath": ["./src/assets/**"]
-  },
   "dependencies": {
     "pixi.js": "^6.4.2"
   },
   "devDependencies": {
+    "chokidar": "^3.5.3",
+    "fs-extra": "^10.1.0",
     "parcel": "^2.6.2",
-    "parcel-plugin-static-files-copy": "^2.6.0",
     "querystring-es3": "^0.2.1"
   }
 }
