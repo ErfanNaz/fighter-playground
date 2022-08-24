@@ -18,30 +18,33 @@ globalThis.addEventListener('load', () => {
     if (isLocked) {
       return
     }
-    if (event.isComposing || event.key === 'd') {
+    if (event.key === 'd') {
       position.x = position.x + 8;
       nextAnimation = Animations.WALK;
     }
-    if (event.isComposing || event.key === 'a') {
+    if (event.key === 'a') {
       position.x = position.x - 8;
       nextAnimation = Animations.WALK;
     }
-    if (event.isComposing || event.key === 'w') {
+    if (event.key === 'w') {
       position.y = position.y - 8;
       nextAnimation = Animations.WALK;
     }
-    if (event.isComposing || event.key === 's') {
+    if (event.key === 's') {
       position.y = position.y + 8;
       nextAnimation = Animations.WALK;
     }
-    if (event.isComposing || event.key === 'j') {
+    if (event.key === 'j') {
       nextAnimation = Animations.SHORYUKEN;
     }
-    if (event.isComposing || event.key === 'k') {
+    if (event.key === 'k') {
       nextAnimation = Animations.POWER_SHOT;
     }
-    if (event.isComposing || event.key === 'l') {
+    if (event.key === 'l') {
       nextAnimation = Animations.AXE_KICK;
+    }
+    if (event.code === 'Space') {
+      nextAnimation = Animations.JUMP;
     }
   });
   globalThis.addEventListener('keyup', (event) => {
@@ -69,7 +72,10 @@ globalThis.addEventListener('load', () => {
     player.animationSpeed = 0.1;
 
     player.onLoop = () => {
-      isLocked = false;
+      if(isLocked) {
+        nextAnimation = Animations.IDLE
+        isLocked = false;
+      }
     }
 
     player.play();
