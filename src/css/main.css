@@ -1,5 +1,10 @@
+html,
+body {
+  margin: 0;
+}
+
 .stage {
-    width: 800px;
-    height: 600px;
-    background-color: #ff2222;
+  width: 800px;
+  height: 600px;
+  background-color: #ff2222;
 }

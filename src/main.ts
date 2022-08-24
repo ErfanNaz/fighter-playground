@@ -9,6 +9,38 @@ globalThis.addEventListener('load', () => {
     backgroundAlpha: 0,
   });
 
+  let position = { x: 0, y: 0 };
+  let currentAnimation: Animations = Animations.IDLE;
+  let nextAnimation: Animations = currentAnimation;
+
+  globalThis.addEventListener('keydown', (event) => {
+    if (event.isComposing || event.key === 'd') {
+      position.x = position.x + 8;
+      nextAnimation = Animations.WALK;
+    }
+    if (event.isComposing || event.key === 'a') {
+      position.x = position.x - 8;
+      nextAnimation = Animations.WALK;
+    }
+    if (event.isComposing || event.key === 'w') {
+      position.y = position.y - 8;
+      nextAnimation = Animations.WALK;
+    }
+    if (event.isComposing || event.key === 's') {
+      position.y = position.y + 8;
+      nextAnimation = Animations.WALK;
+    }
+    if (event.isComposing || event.key === 'j') {
+      nextAnimation = Animations.SHORYUKEN;
+    }
+    if (event.isComposing || event.key === 'k') {
+      nextAnimation = Animations.POWER_SHOT;
+    }
+  });
+  globalThis.addEventListener('keyup', (event) => {
+    nextAnimation = Animations.IDLE;
+  });
+
   const stage = globalThis.document.getElementById('stage');
 
   // The application will create a canvas element for you that you
@@ -16,23 +48,31 @@ globalThis.addEventListener('load', () => {
   stage!.appendChild(app.view);
 
   app.loader.add(['assets/fighter.json']).load((data) => {
-    const frames = getAnimation(Animations.MID_KICK)
+    const frames = getAnimationFrames(Animations.SPIN)
 
     const anim = new AnimatedSprite(frames);
     anim.scale.x = 4;
     anim.scale.y = 4;
     anim.x = app.screen.width / 2;
     anim.y = app.screen.height / 2;
-    anim.anchor.set(0.5);
-    anim.animationSpeed = .100;
+    anim.anchor.set(0.1);
+    anim.animationSpeed = 0.1;
     anim.play();
 
     app.stage.addChild(anim);
 
+    app.stage.removeChild();
 
-    /* app.ticker.add(() => {
-      anim.rotation += 0.01;
-    }); */
+    app.ticker.add(() => {
+      anim.x = position.x;
+      anim.y = position.y;
+
+      if (currentAnimation !== nextAnimation) {
+        currentAnimation = nextAnimation;
+        anim.textures = getAnimationFrames(currentAnimation);
+        anim.play();
+      }
+    });
   });
 });
 
@@ -57,7 +97,7 @@ enum Animations {
 }
 
 
-function getAnimation(anim: Animations) {
+function getAnimationFrames(anim: Animations) {
   const frameCount = ANIMATION_SETTINGS[anim].count;
 
   const frames: Texture[] = [];
@@ -69,3 +109,4 @@ function getAnimation(anim: Animations) {
 
   return frames
 }
+
