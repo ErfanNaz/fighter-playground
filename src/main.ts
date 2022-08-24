@@ -9,7 +9,7 @@ globalThis.addEventListener('load', () => {
     backgroundAlpha: 0,
   });
 
-  let position = { x: 0, y: 0 };
+  let keys = { left: false, up: false, right: false, down: false };
   let currentAnimation: Animations = Animations.IDLE;
   let nextAnimation: Animations = currentAnimation;
   let isLocked: boolean = false;
@@ -19,19 +19,19 @@ globalThis.addEventListener('load', () => {
       return
     }
     if (event.key === 'd') {
-      position.x = position.x + 8;
+      keys.right = true;
       nextAnimation = Animations.WALK;
     }
     if (event.key === 'a') {
-      position.x = position.x - 8;
+      keys.left = true;
       nextAnimation = Animations.WALK;
     }
     if (event.key === 'w') {
-      position.y = position.y - 8;
+      keys.up = true;
       nextAnimation = Animations.WALK;
     }
     if (event.key === 's') {
-      position.y = position.y + 8;
+      keys.down = true;
       nextAnimation = Animations.WALK;
     }
     if (event.key === 'j') {
@@ -48,8 +48,22 @@ globalThis.addEventListener('load', () => {
     }
   });
   globalThis.addEventListener('keyup', (event) => {
+    console.log(event)
     if (isLocked) {
       return
+    }
+    
+    if (event.key === 'd') {
+      keys.right = false;
+    }
+    if (event.key === 'a') {
+      keys.left = false;
+    }
+    if (event.key === 'w') {
+      keys.up = false;
+    }
+    if (event.key === 's') {
+      keys.down = false;
     }
     nextAnimation = Animations.IDLE;
   });
@@ -68,13 +82,14 @@ globalThis.addEventListener('load', () => {
     player.scale.y = 4;
     player.x = app.screen.width / 2;
     player.y = app.screen.height / 2;
-    player.anchor.set(0.1);
+    player.anchor.set(.5);
     player.animationSpeed = 0.1;
 
     player.onLoop = () => {
-      if(isLocked) {
+      if (isLocked) {
         nextAnimation = Animations.IDLE
         isLocked = false;
+        keys = { left: false, up: false, right: false, down: false }
       }
     }
 
@@ -85,8 +100,22 @@ globalThis.addEventListener('load', () => {
     app.stage.removeChild();
 
     app.ticker.add(() => {
-      player.x = position.x;
-      player.y = position.y;
+      if (keys.left) {
+        player.x = player.x + -4
+        player.scale.x = -4
+      }
+      if (keys.up) {
+        player.y = player.y + -4
+      }
+      if (keys.right) {
+        player.x = player.x + 4
+        player.scale.x = 4
+      }
+      if (keys.down) {
+        player.y = player.y + 4
+      }
+      // player.x = position.x;
+      // player.y = position.y;
 
       if (currentAnimation !== nextAnimation) {
         currentAnimation = nextAnimation;

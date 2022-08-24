@@ -7,6 +7,7 @@
     "start": "parcel serve",
     "build": "parcel build",
     "cp": "node ./tools/copy-assets.js",
+    "create:sprite": "node ./tools/create-json-file.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
